@@ -32,6 +32,8 @@ if (platform=='imgur'):
 elif (platform=='discord'):
     if (len(url) == 8) and (url.isalnum() == True):
         pass
+    elif (len(url) == 10) and (url.isalnum() == True):
+        pass
     else:
         print('Invalid discord link.')
         exit()
