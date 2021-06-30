@@ -2,9 +2,10 @@
 import requests
 from termcolor import colored
 import time
+from pytube import YouTube, exceptions
 
 # input stuff
-platform = input("Which platform's link would you like to bruteforce (imgur/discord/pastebin/other)? ")
+platform = input("Which platform's link would you like to bruteforce (imgur/discord/pastebin/youtube/other)? ")
 platform = platform.lower()
 
 # check if other
@@ -24,24 +25,30 @@ url = url.lower()
 
 # checking if link is valid
 if (platform=='imgur'):
-    if (len(url) == 7) and (url.isalnum() == True):
+    if (len(url) == 7) and (url.isalnum()):
         pass
     else:
         print('Invalid imgur link.')
         exit()
 elif (platform=='discord'):
-    if (len(url) == 8) and (url.isalnum() == True):
+    if (len(url) == 8) and (url.isalnum()):
         pass
-    elif (len(url) == 10) and (url.isalnum() == True):
-        pass
+    elif (len(url) == 10) and (url.isalnum()):
+        pass 
     else:
         print('Invalid discord link.')
         exit()
 elif (platform=='pastebin'):
-    if (len(url) == 8) and (url.isalnum() == True):
+    if (len(url) == 8) and (url.isalnum()):
         pass
     else:
         print('Invalid pastebin link.')
+        exit()
+elif (platform=='youtube'):
+    if (len(url) == 11):
+        pass
+    else:
+        print('Invalid youtube link.')
         exit()
 
 # more input stuff
@@ -52,7 +59,7 @@ printfail = printfail.lower()
 correcturl = False
 truelink = ''
 
-# bruteforcing algorithm (yoinked from https://www.geeksforgeeks.org/)
+# bruteforcing algorithm (yoinked from https://www.geeksforgeeks.org/, modified by me)
 def permute(inp):
     possble = []
     n = len(inp)
@@ -66,11 +73,13 @@ def permute(inp):
         for j in range(n):
             if (((i >> j) & 1) == 1):
                 combination[j] = inp[j].upper()
-  
+    
         temp = ""
         for i in combination:
             temp += i
-        possble.append(temp)
+
+        if (possble.count(temp) == 0): # modifications for youtube
+            possble.append(temp) # modifications for everything else
     return possble
 
 # staring timer
@@ -85,7 +94,7 @@ if(platform == 'discord'):
         page = requests.get("https://discord.com/api/v9/invites/" + posurl + "?with_counts=true&with_expiration=true") # discord api
         if (page.status_code == 404):
             if (printfail == 'y'):
-                print(f'{posurl} - Failed') # fail to connect (404)
+                print(f'{posurl} - Failed\n') # fail to connect (404)
         elif(page.status_code == 429):
             print("Oh no! It looks like you're banned from discord's api. Sorry!") # easter egg :(
             correcturl = True
@@ -96,6 +105,7 @@ if(platform == 'discord'):
             truelink = f'\nhttps://discord.com/invite/{posurl} is the right url!'
             break
 
+# imgur stuff
 elif(platform == 'imgur'):
     for urltry in posurls:
 
@@ -103,10 +113,10 @@ elif(platform == 'imgur'):
             page = requests.get("https://api.imgur.com/post/v1/posts/" + urltry + "?client_id=546c25a59c58ad7&include=media%2Ctags%2Caccount%2Cadconfig%2Cpromoted") # imgur api
             if (page.status_code == 404):
                 if (printfail == 'y'):
-                    print(f'{urltry} - Failed')
+                    print(f'{urltry} - Failed\n')
             else:
                 print(f'{urltry} - Success!')
-                truelink = f'\n https://imgur.com/gallery/{urltry} is the right url!'
+                truelink = f'\nhttps://imgur.com/gallery/{urltry} is the right url!'
                 correcturl = True
                 break
 
@@ -114,10 +124,10 @@ elif(platform == 'imgur'):
             page = requests.get("https://api.imgur.com/post/v1/albums/" + urltry + "?client_id=546c25a59c58ad7&include=media%2Cadconfig%2Caccount")
             if (page.status_code == 404):
                 if (printfail == 'y'):
-                    print(f'{urltry} - Failed')
+                    print(f'{urltry} - Failed\n')
             else:
                 print(f'{urltry} - Success!')
-                truelink = f'\n https://imgur.com/a/{urltry} is the right url!'
+                truelink = f'\nhttps://imgur.com/a/{urltry} is the right url!'
                 correcturl = True
                 break
 
@@ -125,10 +135,10 @@ elif(platform == 'imgur'):
             page = requests.get("https://api.imgur.com/post/v1/media/" + urltry + "?client_id=546c25a59c58ad7&include=media%2Cadconfig%2Caccount")
             if (page.status_code == 404):
                 if (printfail == 'y'):
-                    print(f'{urltry} - Failed')
+                    print(f'{urltry} - Failed\n')
             else:
                 print(f'{urltry} - Success!')
-                truelink = f'\n https://imgur.com/{urltry} is the right url!'
+                truelink = f'\nhttps://imgur.com/{urltry} is the right url!'
                 correcturl = True
                 break
 
@@ -136,30 +146,30 @@ elif(platform == 'imgur'):
             page = requests.get("https://api.imgur.com/post/v1/posts/" + urltry + "?client_id=546c25a59c58ad7&include=media%2Ctags%2Caccount%2Cadconfig%2Cpromoted")
             if (page.status_code == 404):
                 if (printfail == 'y'):
-                    print(f'gallery/{urltry} - Failed')
+                    print(f'gallery/{urltry} - Failed\n')
             else:
                 print(f'gallery/{urltry} - Success!')
-                truelink = f'\n https://imgur.com/gallery/{urltry} is the right url!'
+                truelink = f'\nhttps://imgur.com/gallery/{urltry} is the right url!'
                 correcturl = True
                 break
 
             page = requests.get("https://api.imgur.com/post/v1/albums/" + urltry + "?client_id=546c25a59c58ad7&include=media%2Cadconfig%2Caccount")
             if (page.status_code == 404):
                 if (printfail == 'y'):
-                    print(f'a/{urltry} - Failed')
+                    print(f'a/{urltry} - Failed\n')
             else:
                 print(f'a/{urltry} - Success!')
-                truelink = f'\n https://imgur.com/a/{urltry} is the right url!'
+                truelink = f'\nhttps://imgur.com/a/{urltry} is the right url!'
                 correcturl = True
                 break
 
             page = requests.get("https://api.imgur.com/post/v1/media/" + urltry + "?client_id=546c25a59c58ad7&include=media%2Cadconfig%2Caccount")
             if (page.status_code == 404):
                 if (printfail == 'y'):
-                    print(f'/{urltry} - Failed')
+                    print(f'/{urltry} - Failed\n')
             else:
                 print(f'/{urltry} - Success!')
-                truelink = f'\n https://imgur.com/{urltry} is the right url!'
+                truelink = f'\nhttps://imgur.com/{urltry} is the right url!'
                 correcturl = True
                 break
 
@@ -168,17 +178,31 @@ elif(platform == 'imgur'):
             correcturl = True
             break
 
+# pastebin stuff
 elif(platform=='pastebin'):
     for posurl in posurls:
         page = requests.get("https://pastebin.com/" + posurl) # pastebin (not api)
         if (page.status_code == 404):
             if (printfail == 'y'):
-                print(f'{posurl} - Failed')
+                print(f'{posurl} - Failed\n')
         elif (page.status_code == 200):
             print(f'{posurl} - Success!')
             correcturl = True
             truelink = f'\nhttps://pastebin.com/{posurl} is the right url!'
             break
+
+# youtube stuff
+elif(platform=='youtube'):
+    for posurl in posurls:
+        try:
+            YouTube('https://www.youtube.com/watch?v=' + posurl).check_availability() # pytube
+            print(f'{posurl} - Success!')
+            correcturl = True
+            truelink = f'\nhttps://www.youtube.com/watch?v={posurl} is the right url!'
+            break
+        except exceptions.VideoUnavailable:
+            if (printfail == 'y'):
+                print(f'{posurl} - Failed\n')
 
 else:
     print("This platform isn't supported or doesn't exist")
