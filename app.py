@@ -1,6 +1,5 @@
 # modules
 import requests
-from termcolor import colored
 import time
 from pytube import YouTube, exceptions
 
@@ -17,7 +16,7 @@ if(platform=='other'):
 if (platform=='imgur'):
     mode = input('Url contains /a/, /gallery/, none or any if you dont know (input "a"/"gallery"/"none"/"any"): ') # imgur has 3 diffrent url types (why)
     mode = mode.lower()
-    if (mode=='any'): print(colored('\nWarning! "Any" mode is pretty slow. Try specific mode if you want to go faster.\n', 'red'))
+    if (mode=='any'): print('\nWarning! "Any" mode is pretty slow. Try specific mode if you want to go faster.\n')
 
 # not imgur input stuff
 url = input('Input link (the last part): ')
@@ -91,7 +90,7 @@ posurls = (permute(url))
 # discord stuff
 if(platform == 'discord'):
     for posurl in posurls:
-        page = requests.get("https://discord.com/api/v9/invites/" + posurl + "?with_counts=true&with_expiration=true") # discord api
+        page = requests.get("https://discord.com/api/v9/invites/" + posurl) # discord api
         if (page.status_code == 404):
             if (printfail == 'y'):
                 print(f'{posurl} - Failed\n') # fail to connect (404)
