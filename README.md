@@ -1,6 +1,6 @@
 # ultimate-url-bruteforcer
 
-![![Replit](https://img.shields.io/badge/Replit-DD1200?style=for-the-badge&logo=Replit&logoColor=white)](https://replit.com/@Gcat101/LinkBruteforcer)
+[![Replit](https://img.shields.io/badge/Replit-DD1200?style=for-the-badge&logo=Replit&logoColor=white)](https://replit.com/@Gcat101/LinkBruteforcer)
 
 Bruteforce discord invite/imgur/pastebin/youtube link capitalisation
 
