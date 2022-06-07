@@ -194,7 +194,11 @@ elif(platform=='pastebin'):
 elif(platform=='youtube'):
     for posurl in posurls:
         try:
-            YouTube('https://www.youtube.com/watch?v=' + posurl).check_availability() # pytube
+            while True: 
+                try: 
+                    YouTube('https://www.youtube.com/watch?v=' + posurl).check_availability() # pytube
+                    break
+                except requests.exceptions.HTTPError: time.sleep(15)
             print(f'{posurl} - Success!')
             correcturl = True
             truelink = f'\nhttps://www.youtube.com/watch?v={posurl} is the right url!'
@@ -202,8 +206,6 @@ elif(platform=='youtube'):
         except exceptions.VideoUnavailable:
             if (printfail == 'y'):
                 print(f'{posurl} - Failed\n')
-        except requests.exceptions.HTTPError:
-            time.sleep(15)
 
 else:
     print("This platform isn't supported or doesn't exist")
