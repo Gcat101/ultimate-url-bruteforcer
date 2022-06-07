@@ -202,6 +202,8 @@ elif(platform=='youtube'):
         except exceptions.VideoUnavailable:
             if (printfail == 'y'):
                 print(f'{posurl} - Failed\n')
+        except requests.exceptions.HTTPError:
+            time.sleep(15)
 
 else:
     print("This platform isn't supported or doesn't exist")
