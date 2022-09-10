@@ -51,6 +51,13 @@ elif (platform=='pastebin'):
     else:
         print('Invalid pastebin link.')
         exit()
+
+elif (platform=='bitly'):
+    if (len(url) == 7) and (url.isalnum()):
+        pass
+    else:
+        print('Invalid bitly link.')
+        exit()
       
 elif (platform=='youtube'):
     if (len(url) == 11):
