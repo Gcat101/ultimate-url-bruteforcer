@@ -2,7 +2,7 @@
 
 [![Replit](https://img.shields.io/badge/Replit-DD1200?style=for-the-badge&logo=Replit&logoColor=white)](https://replit.com/@Gcat101/LinkBruteforcer)
 
-Bruteforce discord invite/imgur/pastebin/youtube link capitalisation
+Bruteforce discord invite/imgur/pastebin/youtube/bitly/pastebin/postimg link capitalisation
 
 ![web_120072 (1)](https://user-images.githubusercontent.com/79367505/123843611-c6a4d380-d91a-11eb-8351-c40889b98b4d.png)
 

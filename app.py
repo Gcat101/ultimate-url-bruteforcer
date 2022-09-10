@@ -4,7 +4,7 @@ import time
 from pytube import YouTube, exceptions
 
 # input stuff
-platform = input("Which platform's link would you like to bruteforce (imgur/discord/pastebin/youtube/bitly/other)? ")
+platform = input("Which platform's link would you like to bruteforce (imgur/discord/youtube/bitly/pastebin/postimg/other)? ")
 platform = platform.lower()
 
 # check if other
@@ -37,23 +37,33 @@ elif (platform=='discord'):
     else:
         print('Invalid discord link.')
         exit()
+
+elif (platform=='postimg'):
+    if (len(url) == 8) and (url.isalnum()):
+        pass
+    else:
+        print('Invalid postimg link.')
+        exit()
+      
 elif (platform=='pastebin'):
     if (len(url) == 8) and (url.isalnum()):
         pass
     else:
         print('Invalid pastebin link.')
         exit()
-elif (platform=='youtube'):
-    if (len(url) == 11):
-        pass
-    else:
-        print('Invalid youtube link.')
-        exit()
+
 elif (platform=='bitly'):
     if (len(url) == 7) and (url.isalnum()):
         pass
     else:
         print('Invalid bitly link.')
+        exit()
+      
+elif (platform=='youtube'):
+    if (len(url) == 11):
+        pass
+    else:
+        print('Invalid youtube link.')
         exit()
 
 # more input stuff
@@ -186,7 +196,7 @@ elif(platform == 'imgur'):
 # pastebin stuff
 elif(platform=='pastebin'):
     for posurl in posurls:
-        page = requests.get("https://pastebin.com/" + posurl) # pastebin (not api)
+        page = requests.get("https://pastebin.com/" + posurl) 
         if (page.status_code == 404):
             if (printfail == 'y'):
                 print(f'{posurl} - Failed\n')
@@ -196,6 +206,33 @@ elif(platform=='pastebin'):
             truelink = f'\nhttps://pastebin.com/{posurl} is the right url!'
             break
 
+# bitly stuff
+elif(platform=='bitly'):
+    for posurl in posurls:
+        page = requests.get("https://bit.ly/" + posurl)
+        if (page.status_code == 404):
+            if (printfail == 'y'):
+                print(f'{posurl} - Failed\n')
+        elif (page.status_code == 200):
+            print(f'{posurl} - Success!')
+            correcturl = True
+            truelink = f'\nhttps://bit.ly/{posurl} is the right url!'
+            break
+
+# postimg stuff
+elif(platform=='postimg'):
+    for posurl in posurls:
+        page = requests.get("https://postimg.cc/" + posurl) # postimg
+        if (page.status_code == 404):
+            if (printfail == 'y'):
+                print(f'{posurl} - Failed\n')
+        elif (page.status_code == 200):
+            print(f'{posurl} - Success!')
+            correcturl = True
+            truelink = f'\nhttps://postimg.cc/{posurl} is the right url!'
+            break
+
+          
 # youtube stuff
 elif(platform=='youtube'):
     for posurl in posurls:
@@ -213,19 +250,6 @@ elif(platform=='youtube'):
             if (printfail == 'y'):
                 print(f'{posurl} - Failed\n')
 
-# bitly stuff
-elif(platform=='bitly'):
-    for posurl in posurls:
-        page = requests.get("https://bit.ly/" + posurl)
-        if (page.status_code == 404):
-            if (printfail == 'y'):
-                print(f'{posurl} - Failed\n')
-        elif (page.status_code == 200):
-            print(f'{posurl} - Success!')
-            correcturl = True
-            truelink = f'\nhttps://bit.ly/{posurl} is the right url!'
-            break                
-                
 else:
     print("This platform isn't supported or doesn't exist")
     correcturl=True
